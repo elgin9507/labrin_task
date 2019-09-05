@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+
+  postgres:
+    container_name:  postgres-db
+    image:           postgres:9.6.6
+    ports:
+      - 5432:5432
+    volumes:
+      - ./pgdb:/var/lib/postgresql/data
+    env_file: ./.env
+    environment:
+      - LC_ALL=C.UTF-8
+    restart: "always"
+
+  postgres_comments:
+    container_name:  postgres-db-comments
+    image:           postgres:9.6.6
+    ports:
+      - 5433:5432
+    volumes:
+      - ./pgdb-comments:/var/lib/postgresql/data
+    env_file: ./.env-comments
+    environment:
+      - LC_ALL=C.UTF-8
+    restart: "always"
+
+  redis:
+    image: redis:4.0.11
+    restart: "always"
+    container_name: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - ./redisdb:/var/lib/redis

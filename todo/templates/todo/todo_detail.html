@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ todo.name }}</h1>
+<p>{{ todo.description }}</p>
+
+<hr>
+<div class="comments-container">
+  {% include 'todo/comments.html' %}
+</div>
+
+{% endblock %}
+
+{% block websocket-script %}
+
+<script>
+  function getCommentHTML(data) {
+    return (
+      "<li class=\"list-group-item\">" +
+      "<p class=\"small\">" + data.date.toLowerCase() + " - " + data.user_name +
+      "</p>" + data.text + "</li>"
+    )
+  }
+
+  var commentSocket = new WebSocket('ws://' + window.location.host + '/comment/' + {{ todo.id }} +'/');
+
+  commentSocket.onopen = function open() {
+    console.log('CONNECTED')
+  };
+
+  if (commentSocket.readyState == WebSocket.OPEN) {
+    commentSocket.onopen();
+  }
+
+  commentSocket.onmessage = function message(e) {
+    var data = JSON.parse(e.data);
+    var commentHTML = getCommentHTML(data);
+    $('.comment-list').prepend(commentHTML);
+  };
+
+  $('.add-comment').on('click', function (e) {
+    e.preventDefault();
+    var text = $('.comment-text').val().trim();
+    if (text !== "") {
+      commentSocket.send(JSON.stringify(
+        {
+          'message': text
+        }
+      ));
+      $('.comment-text').val("");
+    }
+  })
+
+</script>
+
+{% endblock %}

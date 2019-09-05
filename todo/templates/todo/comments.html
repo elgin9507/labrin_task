@@ -1,0 +1,28 @@
+{% if comment_allowed %}
+  <h3>Add comment</h3>
+  <form method="post">{% csrf_token %}
+    <div class="form-row">
+      <div class="form-group full-textarea">
+        <textarea class="form-control comment-text" name="comment" cols="40" rows="2" ></textarea>
+      </div>
+    </div>
+    <button type="submit" id="id_comment" todo-id="{{ todo_id }}" class="btn btn-primary add-comment">
+      Comment
+    </button>
+  </form>
+  <hr>
+{% else %}
+  <p class="text-warning">You are not allowed to comment here by the auhtor of this task.</p>
+{% endif %}
+<h4>Comments</h4>
+<div class="card" style="width: 100%;">
+  <ul class="list-group list-group-flush comment-list">
+    {% for comment in comment_list %}
+
+      <li class="list-group-item">
+        <p class="small">{{ comment.created_at|date:"b d h:i a" }} - {{ comment.author.username }}</p>
+        {{ comment.text }}</li>
+    {% empty %}
+    {% endfor %}
+  </ul>
+</div>

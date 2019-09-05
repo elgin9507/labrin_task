@@ -1,0 +1,19 @@
+.full-textarea {
+    width: 100%;
+}
+
+.datetimer-custom {
+    width: 90% !important;
+}
+
+@media (max-width: 992px) {
+    .datetimer-custom {
+        width: 83% !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .datetimer-custom {
+        width: 80% !important;
+    }
+}

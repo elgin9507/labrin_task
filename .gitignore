@@ -1,0 +1,9 @@
+env/
+pgdb/
+pgdb-comments/
+redisdb/
+celery*.bak
+celery*.dat
+celery*.dir
+*.pyc
+.idea/
